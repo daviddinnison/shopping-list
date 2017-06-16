@@ -11,7 +11,7 @@ let initialState = {
 	items: [
 		{ name:"apples", checked: false},
 		{ name:"oranges", checked: false},
-		{ name:"milk", checked: true},
+		{ name:"milk", checked: false},
 		{ name:"bread", checked: false}
 	]
 };
@@ -26,8 +26,23 @@ function addsItemToState (state, item) {
 		name: item, checked: false
 	}
 	state.items.push(itemObj);
+
 	rendersItems(state, $('.shopping-list'));
 }
+
+	//check button function
+function checkItem(state, index) {
+	state.items[index].checked = !state.items[index].checked;
+	rendersItems(state, $('.shopping-list'));
+}
+
+function deleteItem(state, index) {
+	state.items.splice(index, 1);
+	rendersItems(state, $('.shopping-list'));
+}
+
+
+
 
 //STEP THREE ---------- RENDER FUNCTION HANDLING
 //pushing state into DOM via append
@@ -36,13 +51,13 @@ function rendersItems(state,element) {
 //create box with text entered
 // Loop thing let createsItemsArray = state.items.map()
 	//make template 
-	let itemsArray = state.items.map(function(item) {
+	let itemsArray = state.items.map(function(item, i) {
 
 		//checks for item true or false
 		let checkCondition = item.checked;
 
 		return (`
-			<li>
+			<li data-index="${i}">
 			<span class="shopping-item ${checkCondition ? 'shopping-item__checked' : null}">${item.name}</span> 
 	        <div class="shopping-item-controls">
 	          <button class="shopping-item-toggle">
@@ -75,6 +90,22 @@ function submitsForm(){
 }
 
 //add check functioniality via class removal/adding 
+function checkItemListen() {
+	$('.shopping-item-toggle').click(function(event) {
+		// let targetItem = $('.shopping-item-toggle').closest('[attribute="data-index"]');
+		//let targetItem = $('.shopping-item-toggle').closest('[attribute="data-index"]');
+		//let index = parseInt(targetItem).getAttribute("data-index");
+		let targetItem = $('.shopping-item-toggle').parents(('[attribute="data-index"]'));
+		console.log("my index: " + targetItem);
+		console.log(targetItem);
+		checkItem(initialState, targetItem);
+	});
+}
+
+//<li data-index="${i}">
+
+
+
 //add delete functionality (how?)
 
 
@@ -85,4 +116,5 @@ function submitsForm(){
 $(function (){
 	rendersItems(initialState, $('.shopping-list'));
 	submitsForm();
+	checkItemListen();
 }) 
