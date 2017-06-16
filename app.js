@@ -28,25 +28,38 @@ let initialState = {
 //pushing state into DOM via append
 
 //renderfunction
-function rendersItems(state) {
+function rendersItems(state,element) {
 //create box with text entered
-
+// Loop thing let createsItemsArray = state.items.map()
 	//make template 
-	let template = (`
-		<li>
-		<span class="shopping-item">${state.items.name}</span> 
-        <div class="shopping-item-controls">
-          <button class="shopping-item-toggle">
-            <span class="button-label">check</span>
-          </button>
-          <button class="shopping-item-delete">
-            <span class="button-label">delete</span>
-          </button>
-        </div>
-      </li>`)
-      
+	//currentCondition ? one : two;
+	let itemsArray = state.items.map(function(item) {
 
- alert(template);
+		//checks for item true or false
+		let checkCondition = item.checked;
+		//alert(checkCondition);
+
+		return (`
+			<li>
+			<span class="shopping-item ${checkCondition ? 'shopping-item__checked' : null}">${item.name}</span> 
+	        <div class="shopping-item-controls">
+	          <button class="shopping-item-toggle">
+	            <span class="button-label">check</span>
+	          </button>
+	          <button class="shopping-item-delete">
+	            <span class="button-label">delete</span>
+	          </button>
+	        </div>
+	      </li>`)
+	});
+
+   //loop ends  
+
+
+   //append to dom
+   element.append(itemsArray);
+ // alert(template);
+ 	console.log(itemsArray);
 }
 //STEP FOUR -------- USER ACTIONS HANDLING
 //listen for form submission click and text entered
@@ -67,6 +80,6 @@ function submitsForm(){
 //STEP FIVE ------ INTIALIZE IT
 //doc ready w/render function
 $(function (){
-	rendersItems(initialState);
+	rendersItems(initialState, $('.shopping-list'));
 	submitsForm();
 }) 
