@@ -20,24 +20,26 @@ let initialState = {
 
 //STEP TWO -------- STATE MODIFICATION FUNCTIONS
 //create functions for adding/removing from state
-//
-
-
+function addsItemToState (state, item) {
+	//console.log(state.items);
+	let itemObj = {
+		name: item, checked: false
+	}
+	state.items.push(itemObj);
+	rendersItems(state, $('.shopping-list'));
+}
 
 //STEP THREE ---------- RENDER FUNCTION HANDLING
 //pushing state into DOM via append
 
-//renderfunction
 function rendersItems(state,element) {
 //create box with text entered
 // Loop thing let createsItemsArray = state.items.map()
 	//make template 
-	//currentCondition ? one : two;
 	let itemsArray = state.items.map(function(item) {
 
 		//checks for item true or false
 		let checkCondition = item.checked;
-		//alert(checkCondition);
 
 		return (`
 			<li>
@@ -53,21 +55,22 @@ function rendersItems(state,element) {
 	      </li>`)
 	});
 
-   //loop ends  
-
-
    //append to dom
-   element.append(itemsArray);
- // alert(template);
- 	console.log(itemsArray);
+   element.html(itemsArray);
+   // console.log(itemsArray);
 }
 //STEP FOUR -------- USER ACTIONS HANDLING
 //listen for form submission click and text entered
 function submitsForm(){
 	$('#js-shopping-list-form').submit(function(event){
+	event.preventDefault();
 	//store form text in variable
 	let userInput = $('#shopping-list-entry').val();
-	console.log(userInput);
+	// console.log(userInput);
+	addsItemToState(initialState, userInput);
+
+	//Make user input field blank after submission
+	// $('#js-shopping-list-form').reset();
 	});
 }
 
